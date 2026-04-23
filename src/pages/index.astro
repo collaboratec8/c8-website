@@ -1,9 +1,10 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
 
-// CONFIGURE ME: set to your Cal.com slug once the account is set up.
-// e.g. 'ishmukit/intro-call'
-const CAL_COM_LINK = 'ishmukit/intro-call';
+// Cal.eu is the EU-hosted Cal.com instance — same product, EU data residency.
+const CAL_LINK = 'ishmukit/intro-call';
+const CAL_ORIGIN = 'https://cal.eu';
+const CAL_EMBED_SRC = 'https://app.cal.eu/embed/embed.js';
 ---
 <BaseLayout
   title="C8 — Finance that thinks forward. For SMEs that have outgrown their accountant."
@@ -327,11 +328,11 @@ const CAL_COM_LINK = 'ishmukit/intro-call';
         <!-- Cal.com embed — replace CAL_COM_LINK in frontmatter once your Cal.com account is live -->
         <div id="cal-inline-embed"></div>
         <noscript>
-          <p>To book a call, please <a href={`https://cal.com/${CAL_COM_LINK}`}>use this link</a>.</p>
+          <p>To book a call, please <a href={`${CAL_ORIGIN}/${CAL_LINK}`}>use this link</a>.</p>
         </noscript>
-        <script is:inline define:vars={{ link: CAL_COM_LINK }}>
-          (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if (typeof namespace === "string") { cal.ns[namespace] = cal.ns[namespace] || api; p(cal.ns[namespace], ar); p(cal, ["initNamespace", namespace]); } else p(cal, ar); return; } p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
-          Cal("init", "c8-intro", { origin: "https://cal.com" });
+        <script is:inline define:vars={{ link: CAL_LINK, origin: CAL_ORIGIN, embedSrc: CAL_EMBED_SRC }}>
+          (function (C, A, L) { let p = function (a, ar) { a.q.push(ar); }; let d = C.document; C.Cal = C.Cal || function () { let cal = C.Cal; let ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { const api = function () { p(api, arguments); }; const namespace = ar[1]; api.q = api.q || []; if (typeof namespace === "string") { cal.ns[namespace] = cal.ns[namespace] || api; p(cal.ns[namespace], ar); p(cal, ["initNamespace", namespace]); } else p(cal, ar); return; } p(cal, ar); }; })(window, embedSrc, "init");
+          Cal("init", "c8-intro", { origin: origin });
           Cal.ns["c8-intro"]("inline", { elementOrSelector: "#cal-inline-embed", config: { layout: "month_view" }, calLink: link });
           Cal.ns["c8-intro"]("ui", { styles: { branding: { brandColor: "#5E5BF0" } }, hideEventTypeDetails: false, layout: "month_view" });
         </script>
@@ -603,8 +604,4 @@ const CAL_COM_LINK = 'ishmukit/intro-call';
     .steps{grid-template-columns:1fr;gap:32px}
     .tier .tname{font-size:24px}
     .sol h3{font-size:22px}
-    .contact-meta .row{flex-direction:column;align-items:flex-start;gap:4px}
-    .contact-meta .label{width:auto}
-  }
-</style>
-</BaseLayout>
+    .contact-meta .row{flex-direction:column;align-items:flex-start;gap:
