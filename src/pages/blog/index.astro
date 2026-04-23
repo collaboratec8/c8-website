@@ -1,0 +1,164 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
+
+const featured = posts.find(p => p.data.featured) ?? posts[0];
+const rest = posts.filter(p => p.slug !== featured?.slug);
+
+const fmt = (d: Date) => d.toLocaleDateString('en-GB', { year: 'numeric', month: 'short', day: 'numeric' });
+---
+<BaseLayout
+  title="Journal — Plain-English writing on SME finance"
+  description="Tactical writing on SME finance — cash flow, pricing, hiring, fundraising, forecasting. No jargon. From an ex-VW, Mercedes senior finance leader."
+  pageType="blog-index"
+>
+  <section class="blog-head">
+    <div class="container">
+      <span class="eyebrow">The journal</span>
+      <h1>Plain-English writing on <span>SME finance</span>.</h1>
+      <p>Short reads on cash, pricing, planning, hiring, and getting your numbers ready for investors. No jargon, no filler.</p>
+    </div>
+  </section>
+
+  {featured && (
+    <section class="featured-wrap">
+      <div class="container">
+        <a href={`/blog/${featured.slug}`} class="featured-card reveal">
+          <div class="featured-left">
+            <div class="meta">
+              <span class="cat">{featured.data.category}</span>
+              <span class="dot">·</span>
+              <span>{fmt(featured.data.publishedAt)}</span>
+              <span class="dot">·</span>
+              <span>{featured.data.readTime} min read</span>
+            </div>
+            <h2>{featured.data.title}</h2>
+            <p>{featured.data.description}</p>
+            <span class="read">Read article <span class="arrow">→</span></span>
+          </div>
+          <div class="featured-right" aria-hidden="true">
+            <div class="featured-visual">
+              <span class="feat-cat">{featured.data.category}</span>
+              <div class="feat-decoration">
+                <svg viewBox="0 0 120 120" width="120" height="120"><circle cx="60" cy="60" r="50" fill="none" stroke="#5E5BF0" stroke-width="2" opacity="0.4"/><circle cx="60" cy="60" r="30" fill="#D9FF40" opacity="0.5"/><circle cx="60" cy="60" r="12" fill="#0A0A0A"/></svg>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </section>
+  )}
+
+  <section class="posts-grid-wrap">
+    <div class="container">
+      {rest.length > 0 && (
+        <>
+          <h2 class="all-label">More from the journal</h2>
+          <div class="posts-grid">
+            {rest.map(post => (
+              <a href={`/blog/${post.slug}`} class="post-card reveal">
+                <div class={`cover cat-${post.data.category.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')}`}>
+                  <span class="badge">{post.data.category}</span>
+                </div>
+                <div class="body">
+                  <h3>{post.data.title}</h3>
+                  <p>{post.data.description}</p>
+                  <div class="meta">{fmt(post.data.publishedAt)} · {post.data.readTime} min read</div>
+                </div>
+              </a>
+            ))}
+          </div>
+        </>
+      )}
+
+      {posts.length === 0 && (
+        <p style="color: var(--ink-50); font-size: 17px;">No posts yet — check back soon.</p>
+      )}
+    </div>
+  </section>
+
+  <section class="journal-cta">
+    <div class="container">
+      <div class="jcta-wrap reveal">
+        <div>
+          <h2>Want this kind of thinking applied to <em>your</em> numbers?</h2>
+          <p>Fractional finance director for UK SMEs. Book a 20-minute intro and see if there's a fit.</p>
+        </div>
+        <div class="jcta-ctas">
+          <a href="/#contact" class="btn btn-primary">Book an intro <span class="arrow">→</span></a>
+          <a href="/#magnet" class="btn btn-ghost">Free cash-flow template</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<style>
+  .blog-head{padding:80px 0 48px;background:var(--canvas);border-bottom:1px solid var(--border)}
+  .blog-head h1{font-family:var(--font-display);font-weight:700;font-size:clamp(40px,5vw,72px);line-height:1.02;letter-spacing:-0.03em;margin-top:14px;margin-bottom:18px;color:var(--ink)}
+  .blog-head h1 span{color:var(--indigo)}
+  .blog-head p{color:var(--ink-50);font-size:18px;max-width:580px;line-height:1.55}
+
+  .featured-wrap{padding:56px 0 0}
+  .featured-card{display:grid;grid-template-columns:1.4fr 1fr;gap:48px;background:var(--ink);color:#fff;border-radius:var(--radius-lg);padding:56px;text-decoration:none;transition:transform .3s;overflow:hidden;position:relative}
+  .featured-card::before{content:"";position:absolute;top:0;right:0;width:400px;height:400px;background:radial-gradient(circle, rgba(94,91,240,0.2) 0%, transparent 70%);pointer-events:none}
+  .featured-card:hover{transform:translateY(-3px)}
+  .featured-left{position:relative;z-index:1}
+  .featured-card .meta{font-family:var(--font-mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:20px;display:flex;gap:10px;flex-wrap:wrap}
+  .featured-card .cat{color:var(--lime)}
+  .featured-card .dot{opacity:0.4}
+  .featured-card h2{font-family:var(--font-display);font-weight:700;font-size:clamp(28px,3.2vw,42px);line-height:1.1;letter-spacing:-0.02em;margin-bottom:16px;color:#fff}
+  .featured-card p{color:rgba(255,255,255,0.7);font-size:17px;line-height:1.6;margin-bottom:28px}
+  .featured-card .read{color:var(--lime);font-family:var(--font-mono);font-size:12px;text-transform:uppercase;letter-spacing:0.12em;display:inline-flex;align-items:center;gap:8px}
+  .featured-card .arrow{transition:transform .2s}
+  .featured-card:hover .arrow{transform:translateX(4px)}
+  .featured-right{display:flex;align-items:center;justify-content:center;position:relative;z-index:1}
+  .featured-visual{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:var(--radius-lg);padding:48px;display:flex;flex-direction:column;gap:20px;align-items:center;justify-content:center;min-height:220px;width:100%}
+  .feat-cat{font-family:var(--font-mono);font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--lime)}
+
+  .posts-grid-wrap{padding:96px 0}
+  .all-label{font-family:var(--font-mono);font-size:12px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-50);margin-bottom:32px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+  .posts-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .post-card{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;background:#fff;transition:transform .2s,border-color .2s;display:flex;flex-direction:column;text-decoration:none;color:inherit}
+  .post-card:hover{transform:translateY(-3px);border-color:var(--indigo)}
+  .post-card .cover{aspect-ratio:16/10;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--indigo-soft),#fff)}
+  .post-card .cover.cat-pricing{background:linear-gradient(135deg,#fff5cc,var(--surface))}
+  .post-card .cover.cat-hiring{background:linear-gradient(135deg,#f4f7ff,var(--surface))}
+  .post-card .cover.cat-cash-flow{background:linear-gradient(135deg,var(--indigo-soft),#fff)}
+  .post-card .cover.cat-forecasting{background:linear-gradient(135deg,#e8fae0,var(--surface))}
+  .post-card .cover.cat-fundraising{background:linear-gradient(135deg,#ffe4e4,var(--surface))}
+  .post-card .cover.cat-reporting{background:linear-gradient(135deg,#e0f4fa,var(--surface))}
+  .post-card .cover.cat-strategy{background:linear-gradient(135deg,var(--surface-2),#fff)}
+  .post-card .badge{position:absolute;top:16px;left:16px;background:rgba(255,255,255,0.95);padding:6px 10px;border-radius:6px;font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--ink)}
+  .post-card .body{padding:28px;display:flex;flex-direction:column;gap:10px;flex:1}
+  .post-card h3{font-family:var(--font-display);font-weight:600;font-size:19px;letter-spacing:-0.015em;line-height:1.3;color:var(--ink)}
+  .post-card p{color:var(--ink-50);font-size:14.5px;line-height:1.55}
+  .post-card .meta{font-family:var(--font-mono);font-size:11px;color:var(--ink-30);text-transform:uppercase;letter-spacing:0.08em;margin-top:auto;padding-top:16px}
+
+  .journal-cta{padding:96px 0 128px;background:var(--surface)}
+  .jcta-wrap{background:var(--ink);color:#fff;border-radius:var(--radius-lg);padding:56px;display:grid;grid-template-columns:1.5fr 1fr;gap:40px;align-items:center}
+  .jcta-wrap h2{font-family:var(--font-display);font-weight:700;font-size:clamp(24px,2.6vw,32px);letter-spacing:-0.02em;line-height:1.2;margin-bottom:12px}
+  .jcta-wrap h2 em{font-style:normal;color:var(--lime)}
+  .jcta-wrap p{color:rgba(255,255,255,0.7);font-size:16px;line-height:1.55}
+  .jcta-ctas{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+  .journal-cta .btn-ghost{color:#fff;border-color:rgba(255,255,255,0.3)}
+  .journal-cta .btn-ghost:hover{background:#fff;color:var(--ink)}
+
+  @media (max-width:1000px){
+    .featured-card{grid-template-columns:1fr;padding:40px 32px;gap:32px}
+    .featured-right{display:none}
+    .posts-grid{grid-template-columns:1fr 1fr}
+    .jcta-wrap{grid-template-columns:1fr;padding:40px 32px}
+    .jcta-ctas{justify-content:flex-start}
+  }
+  @media (max-width:600px){
+    .blog-head{padding:60px 0 40px}
+    .posts-grid-wrap{padding:64px 0}
+    .posts-grid{grid-template-columns:1fr}
+    .journal-cta{padding:64px 0 80px}
+    .jcta-wrap{padding:36px 24px}
+  }
+</style>
+</BaseLayout>

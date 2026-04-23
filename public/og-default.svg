@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <rect width="1200" height="630" fill="#0A0A0A"/>
+  <defs>
+    <radialGradient id="glow" cx="85%" cy="20%" r="50%">
+      <stop offset="0%" stop-color="#5E5BF0" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#5E5BF0" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
+      <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#1a1a1c" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <!-- Logo -->
+  <text x="80" y="130" font-family="Space Grotesk, Arial, sans-serif" font-size="56" font-weight="700" fill="#fff" letter-spacing="-4">C<tspan fill="#5E5BF0">8</tspan></text>
+  <!-- Headline -->
+  <text x="80" y="320" font-family="Space Grotesk, Arial, sans-serif" font-size="82" font-weight="700" fill="#fff" letter-spacing="-3">Finance that</text>
+  <text x="80" y="410" font-family="Space Grotesk, Arial, sans-serif" font-size="82" font-weight="700" fill="#5E5BF0" letter-spacing="-3">thinks forward.</text>
+  <!-- Sub -->
+  <text x="80" y="490" font-family="Inter, Arial, sans-serif" font-size="28" fill="#a8a8ad" letter-spacing="-0.5">For SMEs that have outgrown their accountant.</text>
+  <!-- Bottom tag -->
+  <rect x="80" y="540" width="180" height="40" rx="20" fill="#D9FF40"/>
+  <text x="170" y="566" font-family="JetBrains Mono, monospace" font-size="14" fill="#0A0A0A" font-weight="500" text-anchor="middle" letter-spacing="1">COLLABORATEC8.COM</text>
+</svg>

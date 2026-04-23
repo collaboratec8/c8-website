@@ -1,0 +1,82 @@
+---
+import SEO from '@components/SEO.astro';
+import Schema from '@components/Schema.astro';
+import Nav from '@components/Nav.astro';
+import Footer from '@components/Footer.astro';
+import '../styles/global.css';
+
+export interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  publishedAt?: Date;
+  updatedAt?: Date;
+  noindex?: boolean;
+  pageType?: 'home' | 'blog-index' | 'blog-post' | 'generic';
+  article?: {
+    title: string;
+    description: string;
+    publishedAt: Date;
+    updatedAt?: Date;
+    url: string;
+    category?: string;
+    readTime?: number;
+  };
+}
+
+const {
+  title,
+  description,
+  ogImage,
+  ogType = 'website',
+  publishedAt,
+  updatedAt,
+  noindex,
+  pageType = 'generic',
+  article,
+} = Astro.props;
+
+const path = Astro.url.pathname;
+---
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="generator" content={Astro.generator} />
+  <SEO
+    title={title}
+    description={description}
+    ogImage={ogImage}
+    ogType={ogType}
+    publishedAt={publishedAt}
+    updatedAt={updatedAt}
+    noindex={noindex}
+  />
+  <Schema pageType={pageType} article={article} />
+  <!-- Netlify Identity widget (for Decap CMS admin login) -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js" defer></script>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to main content</a>
+  <Nav currentPath={path} />
+  <main id="main">
+    <slot />
+  </main>
+  <Footer />
+
+  <script>
+    // Shared scroll-reveal observer — used on all pages
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  </script>
+
+  <style>
+    .skip-link{position:absolute;left:-9999px;top:0;background:var(--ink);color:#fff;padding:12px 18px;z-index:999;border-radius:0 0 8px 0}
+    .skip-link:focus{left:0}
+  </style>
+</body>
+</html>

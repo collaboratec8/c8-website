@@ -1,0 +1,30 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="Thanks — message received"
+  description="Your message has been sent. Ish will reply within one working day."
+  noindex={true}
+>
+  <section class="thanks">
+    <div class="container">
+      <div class="t-wrap">
+        <div class="eyebrow">Message received</div>
+        <h1>Thanks — I've got it.</h1>
+        <p>I read every message personally and reply within one working day. In the meantime, have a look at the <a href="/blog">journal</a> or <a href="/#magnet">grab the free cash-flow template</a>.</p>
+        <div class="ctas">
+          <a href="/" class="btn btn-primary">Back to home <span class="arrow">→</span></a>
+          <a href="/blog" class="btn btn-ghost">Read the journal</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <style>
+    .thanks{padding:120px 0 160px;background:var(--canvas)}
+    .t-wrap{max-width:640px;text-align:center;margin:0 auto}
+    .t-wrap h1{font-family:var(--font-display);font-weight:700;font-size:clamp(34px,4vw,56px);letter-spacing:-0.025em;line-height:1.1;margin:14px 0 18px}
+    .t-wrap p{color:var(--ink-50);font-size:17px;margin-bottom:32px;line-height:1.55}
+    .t-wrap p a{color:var(--indigo);text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px}
+    .ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  </style>
+</BaseLayout>

@@ -1,0 +1,40 @@
+backend:
+  name: git-gateway
+  branch: main
+  commit_messages:
+    create: 'Journal: new post "{{slug}}"'
+    update: 'Journal: update "{{slug}}"'
+    delete: 'Journal: remove "{{slug}}"'
+    uploadMedia: 'Media: upload {{path}}'
+    deleteMedia: 'Media: delete {{path}}'
+
+# Require login through Netlify Identity
+site_url: https://www.collaboratec8.com
+display_url: https://www.collaboratec8.com
+logo_url: /favicon.svg
+
+media_folder: "site/public/uploads"
+public_folder: "/uploads"
+
+collections:
+  - name: "blog"
+    label: "Journal posts"
+    label_singular: "Post"
+    folder: "site/src/content/blog"
+    create: true
+    slug: "{{slug}}"
+    preview_path: "blog/{{slug}}"
+    summary: "{{title}} — {{publishedAt | date('YYYY-MM-DD')}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string", hint: "The headline of the post. Aim for clarity and 60 characters or less for SEO." }
+      - { label: "Description", name: "description", widget: "text", hint: "1–2 sentences. Used as the meta description and as the excerpt on the blog index. 150–160 characters is the sweet spot." }
+      - { label: "Category", name: "category", widget: "select", options: ["Cash flow", "Forecasting", "Pricing", "Hiring", "Fundraising", "Reporting", "Tax & compliance", "Strategy"], default: "Cash flow" }
+      - { label: "Published at", name: "publishedAt", widget: "datetime", format: "YYYY-MM-DDTHH:mm", default: "" }
+      - { label: "Updated at", name: "updatedAt", widget: "datetime", format: "YYYY-MM-DDTHH:mm", required: false }
+      - { label: "Read time (minutes)", name: "readTime", widget: "number", default: 5, value_type: "int", min: 1, max: 60 }
+      - { label: "Featured", name: "featured", widget: "boolean", default: false, hint: "Feature this post at the top of the blog index." }
+      - { label: "Draft", name: "draft", widget: "boolean", default: false, hint: "If on, the post won't publish even when committed." }
+      - label: "Body"
+        name: "body"
+        widget: "markdown"
+        hint: "Write in plain English. Use H2s as questions when possible (AEO-friendly). Front-load the answer."

@@ -1,0 +1,30 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="Page not found"
+  description="The page you were looking for doesn't exist."
+  noindex={true}
+>
+  <section class="notfound">
+    <div class="container">
+      <div class="nf-wrap">
+        <div class="code">404</div>
+        <h1>That page got lost in the forecast.</h1>
+        <p>Couldn't find what you were looking for. Try one of the links below.</p>
+        <div class="ctas">
+          <a href="/" class="btn btn-primary">Back to home <span class="arrow">→</span></a>
+          <a href="/blog" class="btn btn-ghost">Browse the journal</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <style>
+    .notfound{padding:120px 0 160px;background:var(--canvas)}
+    .nf-wrap{max-width:640px;text-align:center;margin:0 auto}
+    .code{font-family:var(--font-mono);font-size:13px;letter-spacing:0.18em;text-transform:uppercase;color:var(--indigo);margin-bottom:24px}
+    .nf-wrap h1{font-family:var(--font-display);font-weight:700;font-size:clamp(34px,4vw,56px);letter-spacing:-0.025em;line-height:1.1;margin-bottom:18px}
+    .nf-wrap p{color:var(--ink-50);font-size:17px;margin-bottom:32px}
+    .ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  </style>
+</BaseLayout>

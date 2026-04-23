@@ -1,0 +1,142 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import type { CollectionEntry } from 'astro:content';
+
+export interface Props {
+  post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+const { title, description, category, publishedAt, updatedAt, readTime } = post.data;
+const url = new URL(`/blog/${post.slug}`, Astro.site).href;
+const formattedDate = publishedAt.toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+<BaseLayout
+  title={title}
+  description={description}
+  ogType="article"
+  publishedAt={publishedAt}
+  updatedAt={updatedAt}
+  pageType="blog-post"
+  article={{
+    title,
+    description,
+    publishedAt,
+    updatedAt,
+    url,
+    category,
+    readTime,
+  }}
+>
+  <article class="post">
+    <header class="post-header">
+      <div class="container">
+        <nav aria-label="Breadcrumb" class="crumbs">
+          <ol>
+            <li><a href="/">C8</a></li>
+            <li><a href="/blog">Journal</a></li>
+            <li aria-current="page">{category}</li>
+          </ol>
+        </nav>
+        <div class="post-meta">
+          <span class="cat">{category}</span>
+          <span class="dot">·</span>
+          <time datetime={publishedAt.toISOString()}>{formattedDate}</time>
+          <span class="dot">·</span>
+          <span>{readTime} min read</span>
+        </div>
+        <h1>{title}</h1>
+        <p class="dek">{description}</p>
+        <div class="byline">
+          <div class="avatar">IM</div>
+          <div>
+            <div class="name">Ish Mukit</div>
+            <div class="role">Founder &amp; Fractional Finance Director at C8 · ACCA</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="post-body">
+      <div class="container">
+        <div class="prose">
+          <slot />
+        </div>
+
+        <aside class="post-cta" aria-label="Call to action">
+          <div class="cta-card">
+            <h3>Want this kind of thinking applied to <em>your</em> numbers?</h3>
+            <p>I'm a fractional finance director for UK SMEs. If you're running a business and any of this post felt familiar, a 20-minute intro call is the fastest way to find out whether C8 can help.</p>
+            <div class="cta-row">
+              <a href="/#contact" class="btn btn-primary">Book an intro <span class="arrow">→</span></a>
+              <a href="/#magnet" class="btn btn-ghost">Free cash-flow template</a>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </article>
+
+  <style is:global>
+    /* Scoped-but-global styles for markdown content inside .prose */
+    .prose{font-family:var(--font-body);font-size:18px;line-height:1.75;color:var(--ink-70);max-width:720px}
+    .prose h2{font-family:var(--font-display);font-weight:700;font-size:clamp(26px,2.5vw,34px);color:var(--ink);line-height:1.2;letter-spacing:-0.02em;margin:56px 0 16px}
+    .prose h3{font-family:var(--font-display);font-weight:600;font-size:22px;color:var(--ink);letter-spacing:-0.015em;line-height:1.3;margin:40px 0 12px}
+    .prose p{margin-bottom:20px}
+    .prose p + p{margin-top:0}
+    .prose strong{color:var(--ink);font-weight:600}
+    .prose a{color:var(--indigo);text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px}
+    .prose a:hover{text-decoration-thickness:2.5px}
+    .prose ul, .prose ol{margin:20px 0 24px;padding-left:24px}
+    .prose li{margin-bottom:8px}
+    .prose li::marker{color:var(--indigo)}
+    .prose blockquote{border-left:3px solid var(--indigo);padding:4px 0 4px 22px;margin:28px 0;font-family:var(--font-display);font-size:22px;line-height:1.4;color:var(--ink);font-weight:500;letter-spacing:-0.01em}
+    .prose code{background:var(--surface);padding:2px 6px;border-radius:4px;font-family:var(--font-mono);font-size:0.9em}
+    .prose pre{background:var(--ink);color:#fff;padding:24px;border-radius:var(--radius-lg);overflow-x:auto;margin:24px 0}
+    .prose pre code{background:transparent;padding:0;color:inherit;font-size:14px}
+    .prose hr{border:none;border-top:1px solid var(--border);margin:48px 0}
+    .prose img{border-radius:var(--radius-lg);margin:32px 0}
+    .prose table{width:100%;border-collapse:collapse;margin:24px 0;font-size:15px}
+    .prose th, .prose td{padding:12px 16px;text-align:left;border-bottom:1px solid var(--border)}
+    .prose th{background:var(--surface);font-family:var(--font-display);font-weight:600;color:var(--ink)}
+  </style>
+
+  <style>
+    .post-header{padding:60px 0 48px;background:linear-gradient(180deg, var(--surface) 0%, var(--canvas) 100%);border-bottom:1px solid var(--border)}
+    .crumbs{font-family:var(--font-mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-50);margin-bottom:28px}
+    .crumbs ol{list-style:none;display:flex;gap:8px;flex-wrap:wrap}
+    .crumbs li:not(:last-child)::after{content:"/";margin-left:8px;opacity:0.5}
+    .crumbs a{color:var(--ink-50);text-decoration:none}
+    .crumbs a:hover{color:var(--indigo)}
+    .crumbs [aria-current]{color:var(--indigo)}
+
+    .post-meta{font-family:var(--font-mono);font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-50);margin-bottom:20px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .post-meta .cat{color:var(--indigo);font-weight:500}
+    .post-meta .dot{opacity:0.4}
+
+    .post-header h1{font-family:var(--font-display);font-weight:700;font-size:clamp(36px,5vw,64px);line-height:1.05;letter-spacing:-0.03em;color:var(--ink);max-width:900px;margin-bottom:20px}
+    .dek{font-size:clamp(17px,1.4vw,21px);color:var(--ink-50);max-width:780px;line-height:1.5;margin-bottom:36px}
+
+    .byline{display:flex;gap:14px;align-items:center;padding-top:28px;border-top:1px solid var(--border)}
+    .byline .avatar{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--indigo),var(--lime));flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:700;color:#fff;font-size:17px;letter-spacing:-0.05em}
+    .byline .name{font-family:var(--font-display);font-weight:600;font-size:16px;color:var(--ink)}
+    .byline .role{font-size:13px;color:var(--ink-50)}
+
+    .post-body{padding:72px 0 96px}
+    .post-cta{margin-top:64px;max-width:720px}
+    .cta-card{background:var(--ink);color:#fff;border-radius:var(--radius-lg);padding:48px}
+    .cta-card h3{font-family:var(--font-display);font-weight:700;font-size:24px;letter-spacing:-0.02em;line-height:1.2;margin-bottom:12px}
+    .cta-card h3 em{font-style:normal;color:var(--lime)}
+    .cta-card p{color:rgba(255,255,255,0.7);font-size:15px;line-height:1.6;margin-bottom:24px}
+    .cta-row{display:flex;gap:10px;flex-wrap:wrap}
+    .cta-card .btn-ghost{color:#fff;border-color:rgba(255,255,255,0.3)}
+    .cta-card .btn-ghost:hover{background:#fff;color:var(--ink)}
+
+    @media (max-width:600px){
+      .post-header{padding:40px 0 32px}
+      .post-header h1{font-size:32px}
+      .post-body{padding:48px 0 72px}
+      .cta-card{padding:32px 24px}
+    }
+  </style>
+</BaseLayout>

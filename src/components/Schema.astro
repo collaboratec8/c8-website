@@ -1,0 +1,248 @@
+---
+// JSON-LD structured data — the single biggest lever for AI search visibility
+// Injected in the <head> via BaseLayout
+
+export interface Props {
+  pageType?: 'home' | 'blog-index' | 'blog-post' | 'generic';
+  article?: {
+    title: string;
+    description: string;
+    publishedAt: Date;
+    updatedAt?: Date;
+    url: string;
+    category?: string;
+    readTime?: number;
+  };
+}
+
+const { pageType = 'generic', article } = Astro.props;
+
+const siteUrl = 'https://www.collaboratec8.com';
+const orgId = `${siteUrl}/#organization`;
+const personId = `${siteUrl}/#ish`;
+const websiteId = `${siteUrl}/#website`;
+
+// Organization — the core entity AI search uses
+const organization = {
+  '@type': 'Organization',
+  '@id': orgId,
+  name: 'C8',
+  alternateName: 'Collaborate C8',
+  legalName: 'Collaborate C8 Ltd',
+  url: siteUrl,
+  logo: {
+    '@type': 'ImageObject',
+    url: `${siteUrl}/favicon.svg`,
+    width: 512,
+    height: 512,
+  },
+  image: `${siteUrl}/og-default.svg`,
+  description:
+    'C8 is a UK fractional finance director and strategic finance consultancy serving small and medium-sized enterprises. Founded by Ish Mukit, ACCA — providing commercial finance expertise to SMEs that have outgrown their accountant.',
+  founder: { '@id': personId },
+  foundingDate: '2023-01',
+  email: 'ish@collaboratec8.com',
+  telephone: '+44 7477 522215',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Milton Keynes',
+    addressCountry: 'GB',
+  },
+  areaServed: {
+    '@type': 'Country',
+    name: 'United Kingdom',
+  },
+  knowsAbout: [
+    'Fractional finance director services',
+    'Strategic finance',
+    'Financial planning and analysis (FP&A)',
+    'Financial forecasting',
+    'Cash flow management',
+    'Management accounting',
+    'Investor-ready financial modelling',
+    'Pitch deck financial modelling',
+    'Bank loan financial modelling',
+    'Management reporting',
+    'Variance analysis',
+    'KPI dashboards',
+    'Unit economics analysis',
+    'Pricing strategy for SMEs',
+    'Commercial finance',
+    'Finance function build-out',
+    'SME finance leadership',
+  ],
+  sameAs: [
+    // Add social profiles here when live
+  ],
+};
+
+// Ish as a Person — powers "who is Ish Mukit" queries
+const person = {
+  '@type': 'Person',
+  '@id': personId,
+  name: 'Ish Mukit',
+  givenName: 'Ish',
+  familyName: 'Mukit',
+  jobTitle: 'Founder & Fractional Finance Director',
+  worksFor: { '@id': orgId },
+  email: 'ish@collaboratec8.com',
+  telephone: '+44 7477 522215',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Milton Keynes',
+    addressCountry: 'GB',
+  },
+  hasCredential: [
+    {
+      '@type': 'EducationalOccupationalCredential',
+      credentialCategory: 'Professional certification',
+      name: 'ACCA (Association of Chartered Certified Accountants)',
+    },
+    {
+      '@type': 'EducationalOccupationalCredential',
+      credentialCategory: 'Degree',
+      name: 'BA (Hons) Accounting & Finance, Coventry University',
+    },
+  ],
+  alumniOf: [
+    { '@type': 'CollegeOrUniversity', name: 'Coventry University' },
+    { '@type': 'Organization', name: 'Volkswagen Financial Services' },
+    { '@type': 'Organization', name: 'Mercedes-Benz Financial Services' },
+    { '@type': 'Organization', name: 'Virgin Active' },
+    { '@type': 'Organization', name: 'Avon' },
+  ],
+  knowsAbout: [
+    'Strategic finance',
+    'FP&A',
+    'Financial modelling',
+    'Investor relations',
+    'Commercial finance',
+  ],
+};
+
+// Website
+const website = {
+  '@type': 'WebSite',
+  '@id': websiteId,
+  url: siteUrl,
+  name: 'C8',
+  description: 'Finance that thinks forward. For SMEs that have outgrown their accountant.',
+  publisher: { '@id': orgId },
+  inLanguage: 'en-GB',
+};
+
+// Home-specific: Service entities + FAQ
+const services = [
+  {
+    '@type': 'Service',
+    name: 'Clarity — Strategic finance essentials for SMEs',
+    description:
+      'Management accounts, 12-month rolling cash-flow forecast, KPI dashboard, and a monthly strategic review — for SMEs that want visibility and control beyond their bookkeeper.',
+    provider: { '@id': orgId },
+    areaServed: { '@type': 'Country', name: 'United Kingdom' },
+    serviceType: 'Fractional finance director services',
+  },
+  {
+    '@type': 'Service',
+    name: 'Momentum — Finance for growth-stage SMEs',
+    description:
+      'Advanced financial modelling, scenario analysis, investor-grade pitch models, margin and unit-economics analysis, and quarterly strategy workshops — for SMEs raising, borrowing or scaling deliberately.',
+    provider: { '@id': orgId },
+    areaServed: { '@type': 'Country', name: 'United Kingdom' },
+    serviceType: 'Strategic finance and FP&A for growth-stage businesses',
+  },
+  {
+    '@type': 'Service',
+    name: 'Infrastructure — Finance function for established SMEs',
+    description:
+      'Finance function design, board-grade reporting, commercial finance deep-dives, and team build-out advisory — for established SMEs ready to formalise their finance operations.',
+    provider: { '@id': orgId },
+    areaServed: { '@type': 'Country', name: 'United Kingdom' },
+    serviceType: 'Finance function build-out for SMEs',
+  },
+];
+
+// FAQ — AI engines love this format
+const faqPage = {
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'What is a fractional finance director?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'A fractional finance director provides senior finance leadership on a part-time or outsourced basis, typically monthly, instead of being hired full-time. It gives small and medium-sized businesses access to the strategic finance thinking of an experienced FD — forecasting, management reporting, investor-ready modelling — at a fraction of the cost of a full-time hire (which in the UK typically runs £100,000–£130,000+).',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'How is C8 different from an accountant?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: "C8 works alongside your existing accountant, not instead of them. Your accountant handles compliance work — bookkeeping, VAT, year-end accounts, tax. C8 provides the forward-looking commercial finance layer: forecasting, management reporting, modelling for fundraising, pricing and margin analysis, and strategic decision support. Most SMEs benefit from having both.",
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What size businesses does C8 work with?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'C8 works primarily with UK SMEs in the £200,000 to £5 million turnover range, across both owner-led smaller businesses and growth-stage scale-ups. Engagement tiers are structured around where the business is in its financial maturity — from foundational visibility (Clarity) through to finance function build-out (Infrastructure).',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Does C8 do bookkeeping, tax or M&A?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'No. C8 deliberately focuses on commercial finance and FP&A work — forecasting, modelling, management reporting, strategic advisory. Bookkeeping and statutory accounts are handled by your existing accountant. Tax planning and VAT are handled by a tax specialist. M&A advisory is handled by specialist deal advisors. C8 will prepare the financial models and numbers but does not execute deals.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'How much does C8 cost?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'C8 offers bespoke monthly fees per engagement, scaled to the tier (Clarity, Momentum, or Infrastructure) and the specifics of the business. The first step is a free 20-minute intro call to scope the engagement, after which a written scope and fixed monthly fee is proposed.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Who founded C8?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'C8 was founded by Ish Mukit, an ACCA-qualified finance leader with over 13 years of senior finance experience across FTSE-listed corporates including Volkswagen Financial Services (where he directed £600m annual budgets and delivered £14m in cost savings), Mercedes-Benz Financial Services, Virgin Active, and Avon. C8 is based in Milton Keynes and serves UK-based SMEs.',
+      },
+    },
+  ],
+};
+
+const schemas: any[] = [website, organization, person];
+if (pageType === 'home') {
+  schemas.push(...services, faqPage);
+}
+if (pageType === 'blog-post' && article) {
+  schemas.push({
+    '@type': 'Article',
+    '@id': `${article.url}#article`,
+    headline: article.title,
+    description: article.description,
+    author: { '@id': personId },
+    publisher: { '@id': orgId },
+    datePublished: article.publishedAt.toISOString(),
+    dateModified: (article.updatedAt ?? article.publishedAt).toISOString(),
+    mainEntityOfPage: article.url,
+    inLanguage: 'en-GB',
+    articleSection: article.category ?? 'Strategy',
+    url: article.url,
+    image: `${siteUrl}/og-default.svg`,
+    ...(article.readTime && { timeRequired: `PT${article.readTime}M` }),
+  });
+}
+
+const graph = {
+  '@context': 'https://schema.org',
+  '@graph': schemas,
+};
+---
+<script type="application/ld+json" set:html={JSON.stringify(graph)} />
