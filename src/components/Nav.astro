@@ -75,12 +75,8 @@ const isHome = currentPath === '/' || currentPath === '';
   .mobile-ctas .btn{justify-content:center;padding:14px 20px;font-size:15px}
   @media (max-width:1000px){
     nav.top ul.nav-links{display:none}
-    .desktop-only{display:none}
+    /* Higher specificity (.cta-wrap + .desktop-only) to beat global .btn rule */
+    .cta-wrap .desktop-only{display:none}
     .hamburger{display:flex}
     .mobile-menu{display:block}
-  }
-  @media (max-width:600px){
-    nav.top .wrap{padding:14px 20px}
-    .mobile-menu{padding:0 20px 24px}
-  }
-</style>
+    nav.top .wrap{padding:16
