@@ -11,6 +11,7 @@ const blog = defineCollection({
     readTime: z.number().int().positive().default(5),
     featured: z.boolean().default(false),
     draft: z.boolean().default(false),
+    cover: z.enum(['three-numbers', 'customer-margin', 'hire-ramp']).optional(),
   }),
 });
 

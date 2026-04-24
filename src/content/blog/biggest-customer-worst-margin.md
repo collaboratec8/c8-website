@@ -6,6 +6,7 @@ publishedAt: 2026-04-04T09:00:00
 readTime: 9
 featured: false
 draft: false
+cover: customer-margin
 ---
 
 In ten years of commercial finance work — first inside Volkswagen, Mercedes and VW Financial Services, now with UK SMEs through C8 — I have never once done a customer-level margin analysis that didn't change at least one opinion the founder held about the business.

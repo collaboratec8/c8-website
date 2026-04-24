@@ -6,6 +6,7 @@ publishedAt: 2026-04-18T09:00:00
 readTime: 6
 featured: true
 draft: false
+cover: three-numbers
 ---
 
 If you run a small business and someone asks you three finance questions, most of the time you should be able to answer them in under five seconds. If you can't, your finance setup has a gap. Not a disaster — just the point where an accountant filing your year-end isn't enough anymore.

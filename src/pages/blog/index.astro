@@ -1,5 +1,8 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
+import ThreeNumbersCover from '@components/covers/ThreeNumbersCover.astro';
+import CustomerMarginCover from '@components/covers/CustomerMarginCover.astro';
+import HireRampCover from '@components/covers/HireRampCover.astro';
 import { getCollection } from 'astro:content';
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft))
@@ -9,6 +12,12 @@ const featured = posts.find(p => p.data.featured) ?? posts[0];
 const rest = posts.filter(p => p.slug !== featured?.slug);
 
 const fmt = (d: Date) => d.toLocaleDateString('en-GB', { year: 'numeric', month: 'short', day: 'numeric' });
+
+const coverMap = {
+  'three-numbers': ThreeNumbersCover,
+  'customer-margin': CustomerMarginCover,
+  'hire-ramp': HireRampCover,
+} as const;
 ---
 <BaseLayout
   title="Journal — Plain-English writing on SME finance"
@@ -40,11 +49,20 @@ const fmt = (d: Date) => d.toLocaleDateString('en-GB', { year: 'numeric', month:
             <span class="read">Read article <span class="arrow">→</span></span>
           </div>
           <div class="featured-right" aria-hidden="true">
-            <div class="featured-visual">
-              <span class="feat-cat">{featured.data.category}</span>
-              <div class="feat-decoration">
-                <svg viewBox="0 0 120 120" width="120" height="120"><circle cx="60" cy="60" r="50" fill="none" stroke="#5E5BF0" stroke-width="2" opacity="0.4"/><circle cx="60" cy="60" r="30" fill="#D9FF40" opacity="0.5"/><circle cx="60" cy="60" r="12" fill="#0A0A0A"/></svg>
-              </div>
+            <div class={`featured-visual${featured.data.cover ? ' has-cover' : ''}`}>
+              {featured.data.cover && coverMap[featured.data.cover] ? (
+                (() => {
+                  const Cover = coverMap[featured.data.cover];
+                  return <Cover />;
+                })()
+              ) : (
+                <>
+                  <span class="feat-cat">{featured.data.category}</span>
+                  <div class="feat-decoration">
+                    <svg viewBox="0 0 120 120" width="120" height="120"><circle cx="60" cy="60" r="50" fill="none" stroke="#5E5BF0" stroke-width="2" opacity="0.4"/><circle cx="60" cy="60" r="30" fill="#D9FF40" opacity="0.5"/><circle cx="60" cy="60" r="12" fill="#0A0A0A"/></svg>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </a>
@@ -60,8 +78,9 @@ const fmt = (d: Date) => d.toLocaleDateString('en-GB', { year: 'numeric', month:
           <div class="posts-grid">
             {rest.map(post => (
               <a href={`/blog/${post.slug}`} class="post-card reveal">
-                <div class={`cover cat-${post.data.category.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')}`}>
+                <div class={`cover cat-${post.data.category.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')}${post.data.cover ? ' has-cover' : ''}`}>
                   <span class="badge">{post.data.category}</span>
+                  {post.data.cover && coverMap[post.data.cover] ? (() => { const Cover = coverMap[post.data.cover]; return <Cover />; })() : null}
                 </div>
                 <div class="body">
                   <h3>{post.data.title}</h3>
@@ -115,7 +134,9 @@ const fmt = (d: Date) => d.toLocaleDateString('en-GB', { year: 'numeric', month:
   .featured-card .arrow{transition:transform .2s}
   .featured-card:hover .arrow{transform:translateX(4px)}
   .featured-right{display:flex;align-items:center;justify-content:center;position:relative;z-index:1}
-  .featured-visual{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:var(--radius-lg);padding:48px;display:flex;flex-direction:column;gap:20px;align-items:center;justify-content:center;min-height:220px;width:100%}
+  .featured-visual{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:var(--radius-lg);padding:48px;display:flex;flex-direction:column;gap:20px;align-items:center;justify-content:center;min-height:220px;width:100%;overflow:hidden}
+  .featured-visual.has-cover{padding:0;background:transparent;border:none;aspect-ratio:16/10;min-height:0}
+  .featured-visual.has-cover > :global(svg){width:100%;height:100%;display:block;border-radius:var(--radius-lg)}
   .feat-cat{font-family:var(--font-mono);font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--lime)}
 
   .posts-grid-wrap{padding:96px 0}
@@ -124,6 +145,8 @@ const fmt = (d: Date) => d.toLocaleDateString('en-GB', { year: 'numeric', month:
   .post-card{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;background:#fff;transition:transform .2s,border-color .2s;display:flex;flex-direction:column;text-decoration:none;color:inherit}
   .post-card:hover{transform:translateY(-3px);border-color:var(--indigo)}
   .post-card .cover{aspect-ratio:16/10;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--indigo-soft),#fff)}
+  .post-card .cover.has-cover{background:transparent}
+  .post-card .cover > :global(svg){position:absolute;inset:0;width:100%;height:100%;display:block}
   .post-card .cover.cat-pricing{background:linear-gradient(135deg,#fff5cc,var(--surface))}
   .post-card .cover.cat-hiring{background:linear-gradient(135deg,#f4f7ff,var(--surface))}
   .post-card .cover.cat-cash-flow{background:linear-gradient(135deg,var(--indigo-soft),#fff)}

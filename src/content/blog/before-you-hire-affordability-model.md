@@ -6,6 +6,7 @@ publishedAt: 2026-03-22T09:00:00
 readTime: 5
 featured: false
 draft: false
+cover: hire-ramp
 ---
 
 The conversation I have most often with SME founders isn't about raising money or selling the business. It's about hiring. Specifically: "can I afford this hire?"
