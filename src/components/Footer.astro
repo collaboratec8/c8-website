@@ -7,6 +7,11 @@ const year = new Date().getFullYear();
       <div class="foot-brand">
         <a href="/" class="logo" aria-label="C8 home">C<span>8</span></a>
         <p>Senior finance, without the senior hire. Fractional finance leadership for UK SMEs that need more than a bookkeeper.</p>
+        <ul class="foot-contact">
+          <li><a href="mailto:ish@collaboratec8.com">ish@collaboratec8.com</a></li>
+          <li><a href="tel:+447477522215">07477 522 215</a></li>
+          <li>Milton Keynes · UK-wide</li>
+        </ul>
       </div>
       <div class="foot-col">
         <h4>Services</h4>
@@ -22,17 +27,18 @@ const year = new Date().getFullYear();
         <ul>
           <li><a href="/blog">Journal</a></li>
           <li><a href="/#magnet">Cash-flow template</a></li>
-          <li><a href="/blog">Hiring affordability model</a></li>
-          <li><a href="/blog">SME finance starter guide</a></li>
+          <li><a href="/#contact">Book a call</a></li>
         </ul>
       </div>
       <div class="foot-col">
-        <h4>Connect</h4>
+        <h4>Follow</h4>
         <ul>
-          <li><a href="https://www.linkedin.com/" rel="noopener">LinkedIn</a></li>
-          <li><a href="mailto:ish@collaboratec8.com">Email</a></li>
-          <li><a href="/#contact">Book a call</a></li>
-          <li><a href="tel:+447477522215">Phone</a></li>
+          <li><a href="https://www.linkedin.com/company/collaborate-c8" rel="noopener" target="_blank">LinkedIn</a></li>
+          <li><a href="https://x.com/collaborateC8" rel="noopener" target="_blank">X / Twitter</a></li>
+          <li><a href="https://www.instagram.com/collaborate.c8/" rel="noopener" target="_blank">Instagram</a></li>
+          <li><a href="https://www.facebook.com/people/CollaborateC8/61555276397776/" rel="noopener" target="_blank">Facebook</a></li>
+          <li><a href="https://www.youtube.com/@Collaborate.C8" rel="noopener" target="_blank">YouTube</a></li>
+          <li><a href="https://www.tiktok.com/@collaborate.c8" rel="noopener" target="_blank">TikTok</a></li>
         </ul>
       </div>
     </div>
@@ -48,6 +54,9 @@ const year = new Date().getFullYear();
   .foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:60px;padding-bottom:60px;border-bottom:1px solid #222}
   .foot-brand .logo{color:#fff;font-size:32px}
   .foot-brand p{color:rgba(255,255,255,0.55);font-size:14px;margin-top:12px;max-width:280px;line-height:1.55}
+  .foot-contact{list-style:none;display:flex;flex-direction:column;gap:6px;margin-top:20px;font-family:var(--font-mono);font-size:12px;color:rgba(255,255,255,0.55)}
+  .foot-contact a{color:rgba(255,255,255,0.75);text-decoration:none}
+  .foot-contact a:hover{color:var(--lime)}
   .foot-col h4{font-family:var(--font-mono);font-size:11px;text-transform:uppercase;letter-spacing:0.18em;color:rgba(255,255,255,0.4);margin-bottom:18px}
   .foot-col ul{list-style:none;display:flex;flex-direction:column;gap:10px}
   .foot-col a{color:rgba(255,255,255,0.7);font-size:14px;text-decoration:none}

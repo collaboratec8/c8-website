@@ -12,6 +12,7 @@ export interface Props {
     url: string;
     category?: string;
     readTime?: number;
+    slug?: string;
   };
 }
 
@@ -22,12 +23,22 @@ const orgId = `${siteUrl}/#organization`;
 const personId = `${siteUrl}/#ish`;
 const websiteId = `${siteUrl}/#website`;
 
-// Organization — the core entity AI search uses
+// All official social profiles — AEO signal via sameAs
+const sameAs = [
+  'https://www.linkedin.com/company/collaborate-c8',
+  'https://x.com/collaborateC8',
+  'https://www.instagram.com/collaborate.c8/',
+  'https://www.facebook.com/people/CollaborateC8/61555276397776/',
+  'https://www.youtube.com/@Collaborate.C8',
+  'https://www.tiktok.com/@collaborate.c8',
+];
+
+// Organization — dual-typed with ProfessionalService for UK local/geo signal
 const organization = {
-  '@type': 'Organization',
+  '@type': ['Organization', 'ProfessionalService'],
   '@id': orgId,
   name: 'C8',
-  alternateName: 'Collaborate C8',
+  alternateName: ['Collaborate C8', 'C8 Fractional FD'],
   legalName: 'Collaborate C8 Ltd',
   url: siteUrl,
   logo: {
@@ -36,9 +47,10 @@ const organization = {
     width: 512,
     height: 512,
   },
-  image: `${siteUrl}/og-default.svg`,
+  image: `${siteUrl}/og-default.png`,
   description:
     'C8 is a UK fractional finance director and strategic finance consultancy serving small and medium-sized enterprises. Founded by Ish Mukit, ACCA — providing commercial finance expertise to SMEs that have outgrown their accountant.',
+  slogan: 'Finance that thinks forward. For SMEs that have outgrown their accountant.',
   founder: { '@id': personId },
   foundingDate: '2023-01',
   email: 'ish@collaboratec8.com',
@@ -46,12 +58,14 @@ const organization = {
   address: {
     '@type': 'PostalAddress',
     addressLocality: 'Milton Keynes',
+    addressRegion: 'Buckinghamshire',
     addressCountry: 'GB',
   },
   areaServed: {
     '@type': 'Country',
     name: 'United Kingdom',
   },
+  priceRange: '££',
   knowsAbout: [
     'Fractional finance director services',
     'Strategic finance',
@@ -71,9 +85,7 @@ const organization = {
     'Finance function build-out',
     'SME finance leadership',
   ],
-  sameAs: [
-    // Add social profiles here when live
-  ],
+  sameAs,
 };
 
 // Ish as a Person — powers "who is Ish Mukit" queries
@@ -117,6 +129,9 @@ const person = {
     'Financial modelling',
     'Investor relations',
     'Commercial finance',
+  ],
+  sameAs: [
+    'https://www.linkedin.com/company/collaborate-c8',
   ],
 };
 
@@ -162,9 +177,13 @@ const services = [
   },
 ];
 
-// FAQ — AI engines love this format
+// FAQ — AI engines love this format. SpeakableSpecification added for voice-AI surfacing.
 const faqPage = {
   '@type': 'FAQPage',
+  speakable: {
+    '@type': 'SpeakableSpecification',
+    cssSelector: ['.faq-item summary h3', '.faq-item p'],
+  },
   mainEntity: [
     {
       '@type': 'Question',
@@ -221,7 +240,27 @@ const schemas: any[] = [website, organization, person];
 if (pageType === 'home') {
   schemas.push(...services, faqPage);
 }
+if (pageType === 'blog-index') {
+  schemas.push({
+    '@type': 'Blog',
+    '@id': `${siteUrl}/blog#blog`,
+    url: `${siteUrl}/blog`,
+    name: 'C8 Journal — Plain-English SME finance writing',
+    description: 'Tactical writing on SME finance — cash flow, pricing, hiring, fundraising, forecasting.',
+    publisher: { '@id': orgId },
+    inLanguage: 'en-GB',
+  });
+  schemas.push({
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl },
+      { '@type': 'ListItem', position: 2, name: 'Journal', item: `${siteUrl}/blog` },
+    ],
+  });
+}
 if (pageType === 'blog-post' && article) {
+  const rawBody = '';
+  const wordCount = article.readTime ? article.readTime * 220 : undefined;
   schemas.push({
     '@type': 'Article',
     '@id': `${article.url}#article`,
@@ -235,8 +274,18 @@ if (pageType === 'blog-post' && article) {
     inLanguage: 'en-GB',
     articleSection: article.category ?? 'Strategy',
     url: article.url,
-    image: `${siteUrl}/og-default.svg`,
+    image: `${siteUrl}/og-default.png`,
+    keywords: [article.category ?? 'SME finance', 'UK SME', 'fractional FD', 'commercial finance'].join(', '),
+    ...(wordCount && { wordCount }),
     ...(article.readTime && { timeRequired: `PT${article.readTime}M` }),
+  });
+  schemas.push({
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl },
+      { '@type': 'ListItem', position: 2, name: 'Journal', item: `${siteUrl}/blog` },
+      { '@type': 'ListItem', position: 3, name: article.title, item: article.url },
+    ],
   });
 }
 

@@ -66,8 +66,9 @@ const isHome = currentPath === '/' || currentPath === '';
   .hamburger[aria-expanded="true"] span:nth-child(1){transform:translateY(7px) rotate(45deg)}
   .hamburger[aria-expanded="true"] span:nth-child(2){opacity:0}
   .hamburger[aria-expanded="true"] span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
-  .mobile-menu{display:none;background:#fff;border-bottom:1px solid var(--border);padding:0 32px 24px;overflow:hidden;max-height:0;transition:max-height .35s ease,padding .35s ease}
-  .mobile-menu.open{max-height:500px;padding-top:8px;padding-bottom:24px}
+  /* Mobile menu: truly invisible when closed — no padding-bottom, no border-bottom until .open */
+  .mobile-menu{display:none;background:#fff;padding:0 32px;overflow:hidden;max-height:0;transition:max-height .35s ease,padding .35s ease,border-bottom-width .25s ease;border-bottom:0 solid var(--border)}
+  .mobile-menu.open{max-height:500px;padding-top:8px;padding-bottom:24px;border-bottom-width:1px}
   .mobile-menu ul{list-style:none;display:flex;flex-direction:column;gap:4px;margin-bottom:20px}
   .mobile-menu a{display:block;padding:14px 0;font-size:17px;color:var(--ink);text-decoration:none;font-weight:500;border-bottom:1px solid var(--border)}
   .mobile-menu a:hover{color:var(--indigo)}
@@ -79,4 +80,12 @@ const isHome = currentPath === '/' || currentPath === '';
     .cta-wrap .desktop-only{display:none}
     .hamburger{display:flex}
     .mobile-menu{display:block}
-    nav.top .wrap{padding:16
+    nav.top .wrap{padding:16px 24px}
+    .logo{font-size:28px}
+  }
+  @media (max-width:600px){
+    nav.top .wrap{padding:14px 20px}
+    .mobile-menu{padding:0 20px}
+    .mobile-menu.open{padding-top:8px;padding-bottom:24px}
+  }
+</style>
