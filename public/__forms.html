@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<!--
+  This file exists ONLY to ensure Netlify's form-detection bot picks up our
+  forms at deploy time. It is referenced nowhere on the live site. Each form
+  here mirrors the live form's name + fields exactly — if you add or rename a
+  field on the real form, mirror the change here too.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Forms (Netlify detection)</title>
+    <meta name="robots" content="noindex" />
+  </head>
+  <body>
+    <form name="contact" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" action="/thanks">
+      <input type="hidden" name="form-name" value="contact" />
+      <input type="text" name="bot-field" />
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <textarea name="message"></textarea>
+    </form>
+
+    <form name="lead-magnet" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" action="/thanks">
+      <input type="hidden" name="form-name" value="lead-magnet" />
+      <input type="text" name="bot-field" />
+      <input type="email" name="email" />
+    </form>
+  </body>
+</html>
