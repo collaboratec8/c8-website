@@ -481,7 +481,7 @@ const CAL_EMBED_SRC = 'https://app.cal.eu/embed/embed.js';
         <span class="eyebrow" style="color:var(--lime)">Free resource</span>
         <h2>The cash-flow model I actually <em>use</em> with clients.</h2>
         <p>A 13-week rolling cash-flow template in Excel. Same structure I set up for a new client in week one. Scenarios, sensitivities, visual warnings when you're heading for trouble. Yours free.</p>
-        <form name="lead-magnet" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thanks">
+        <form name="lead-magnet" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" action="/thanks">
           <input type="hidden" name="form-name" value="lead-magnet" />
           <input type="text" name="bot-field" style="display:none" />
           <input type="email" name="email" placeholder="your@email.com" required aria-label="Email address" />
@@ -578,7 +578,7 @@ const CAL_EMBED_SRC = 'https://app.cal.eu/embed/embed.js';
         </div>
         <div class="contact-form">
           <h3>Prefer to send a note first?</h3>
-          <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thanks">
+          <form name="contact" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" action="/thanks">
             <input type="hidden" name="form-name" value="contact" />
             <input type="text" name="bot-field" style="display:none" />
             <div class="form-field"><label for="f-name">Your name</label><input id="f-name" type="text" name="name" placeholder="Jane Founder" required /></div>
